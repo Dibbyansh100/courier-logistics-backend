@@ -74,9 +74,9 @@ public class SecurityConfiguration {
         // pass the autowired reference variable of UDS to fetch user data from DB
         DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
         dao.setUserDetailsService(userDetailsService);
-        dao.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        dao.setPasswordEncoder(BCryptPasswordEncoder.getInstance());
         // set PasswordEncoder to complete and encrypt password using impl
-        // class NoOpPasswordEncoder
+        // class BCryptPasswordEncoder
         return dao;
     }
 }
