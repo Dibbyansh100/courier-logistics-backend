@@ -13,6 +13,7 @@ import com.logistics.enums.ShipmentStatus;
 import com.logistics.exception.ResourceNotFoundException;
 import com.logistics.repository.CustomerRepository;
 import com.logistics.repository.ShipmentRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 
