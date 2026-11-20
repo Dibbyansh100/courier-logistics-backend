@@ -13,6 +13,7 @@ import com.logistics.entity.User;
 import com.logistics.repository.CustomerRepository;
 import com.logistics.repository.DeliveryAgentRepository;
 import com.logistics.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,7 @@ public class AuthController {
     private final CustomerRepository customerRepository;
     private final DeliveryAgentRepository agentRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<ResponseStructure<LoginResponse>> login(@RequestBody LoginRequest request) {
@@ -40,7 +42,9 @@ public class AuthController {
         }
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
-            if (password != null && passwordEncoder.equals(customer.getPassword())) {
+             if (password != null
+        && passwordEncoder.matches(
+                password, customer.getPassword())) {
                 LoginResponse resp = LoginResponse.builder()
                         .id(customer.getId())
                         .username(customer.getEmail())
@@ -60,7 +64,9 @@ public class AuthController {
         Optional<DeliveryAgent> agentOpt = agentRepository.findByContact(username);
         if (agentOpt.isPresent()) {
             DeliveryAgent agent = agentOpt.get();
-            if (password != null && password.equals(agent.getPassword())) {
+             if (password != null
+        && passwordEncoder.matches(
+                password, agent.getPassword())) {
                 LoginResponse resp = LoginResponse.builder()
                         .id(agent.getId())
                         .username(agent.getContact())
@@ -80,7 +86,9 @@ public class AuthController {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            if (password != null && password.equals(user.getPassword())) {
+             if (password != null
+        && passwordEncoder.matches(
+                password, admin.getPassword())) {
                 LoginResponse resp = LoginResponse.builder()
                         .id(user.getId())
                         .username(user.getUsername())
