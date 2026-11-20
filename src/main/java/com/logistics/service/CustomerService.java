@@ -22,6 +22,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final ShipmentRepository shipmentRepository;
+    private final PasswordEncoder passwordEncoder;
 
  // 1. Create Customer
     public ResponseStructure<Customer> createCustomer(Customer customer) {
