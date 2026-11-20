@@ -40,7 +40,7 @@ public class AuthController {
         }
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
-            if (password != null && password.equals(customer.getPassword())) {
+            if (password != null && passwordEncoder.equals(customer.getPassword())) {
                 LoginResponse resp = LoginResponse.builder()
                         .id(customer.getId())
                         .username(customer.getEmail())
