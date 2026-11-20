@@ -88,7 +88,7 @@ public class AuthController {
             User user = userOpt.get();
              if (password != null
         && passwordEncoder.matches(
-                password, admin.getPassword())) {
+                password, user.getPassword())) {
                 LoginResponse resp = LoginResponse.builder()
                         .id(user.getId())
                         .username(user.getUsername())
