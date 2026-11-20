@@ -11,7 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -68,15 +69,23 @@ public class SecurityConfiguration {
         return source;
     }
 
-    @Bean
-    // Configure DaoAuthenticationProvider as Ap to perform DB authentication
-    public DaoAuthenticationProvider DaoAuthenticationProvider() {
-        // pass the autowired reference variable of UDS to fetch user data from DB
-        DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
-        dao.setUserDetailsService(userDetailsService);
-        dao.setPasswordEncoder(BCryptPasswordEncoder.getInstance());
-        // set PasswordEncoder to complete and encrypt password using impl
-        // class BCryptPasswordEncoder
-        return dao;
-    }
+     
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+@Bean
+public DaoAuthenticationProvider daoAuthenticationProvider(
+        PasswordEncoder passwordEncoder) {
+
+    DaoAuthenticationProvider dao =
+            new DaoAuthenticationProvider();
+
+    dao.setUserDetailsService(userDetailsService);
+    dao.setPasswordEncoder(passwordEncoder);
+
+    return dao;
+}
+
 }
